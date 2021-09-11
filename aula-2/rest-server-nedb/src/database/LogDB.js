@@ -1,15 +1,15 @@
 let NeDB = require('nedb');
 let db = new NeDB({
-    filename:'questions.db',
+    filename:'logs.db',
     autoload:true
 });
 
-class QuestionsDB {
+class LogsDB {
     
-    static add(newQuestion){
+    static add(newLog){
         return new Promise((resolve) => {
-            newQuestion.status = newQuestion.status || 'new2',
-            db.insert(newQuestion, (err, question)=> {
+            newLog.status = newLog.status || 'new2',
+            db.insert(newLog, (err, question)=> {
               if(err) {
                 resolve(null);
               } else {

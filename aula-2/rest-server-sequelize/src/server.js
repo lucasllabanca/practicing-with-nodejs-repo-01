@@ -8,6 +8,7 @@ const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 8080;
 
 Option.belongsTo(Question, {constraints: true, onDelete: 'CASCADE'}); // Question.hasMany(Option);
+Question.hasMany(Option)
 sequelize
   .sync({force : true}) //DROP TABLE + Creates IF NOT EXISTS
   .then(

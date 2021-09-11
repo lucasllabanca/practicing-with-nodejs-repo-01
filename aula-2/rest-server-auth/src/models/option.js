@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const optionSchema = new Schema({
     option: {
         type: String,
+        ref: 'Option',
         required: true
     }
 });

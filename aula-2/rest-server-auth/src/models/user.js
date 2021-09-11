@@ -10,4 +10,4 @@ const mongoose = require('mongoose');
 			required: true
 		}
 	});
-module.exports = mongoose.model('User', optionSchema);
+module.exports = mongoose.model('User', userSchema);

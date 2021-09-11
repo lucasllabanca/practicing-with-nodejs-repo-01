@@ -13,8 +13,9 @@ const questionSchema = new Schema({
         type: String,
         required: true
     },
-    options: [{
+    options: [{ //relation com objects
         type: Object,
+        ref: 'Option',
         required: true
     }]    
 });

@@ -14,7 +14,7 @@ const compare = (request, response, next) => {
     if (!user) {
       notAuthorized(); //Rejeita o login
     }
-    bcrypt.compare(password, user.password)
+    bcrypt.compare(request.body.password, user.password)
       .then(doMatch => {
         if (doMatch) {
           request.session.isLoggedIn = true;
