@@ -11,7 +11,8 @@ module.exports = {
         return Question.findOne({ number: number })
             .then(existingQuestion => {
                 if (existingQuestion) {
-                    throw new Error('Question already exists!');
+                    return {error: `Question ${number} already exists!`};
+                    //throw new Error('Question already exists!');
                 }
                 const newQuestion = {
                     number : questionInput.number,
@@ -19,10 +20,7 @@ module.exports = {
                     status : questionInput.status || 'new2',
                     options : questionInput.options
                 }
-                return new Question(newQuestion);
-            })
-            .then(newQuestion => {
-                return newQuestion.save();
+                return {question: new Question(newQuestion).save()};
             })
             .catch(err => resolve(err));
     }

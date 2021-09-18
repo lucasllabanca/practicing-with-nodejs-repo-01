@@ -23,15 +23,20 @@ module.exports = buildSchema(`
         options: [Option!]
     }
 
+    type Response {
+        question: Question
+        error: String
+    }
+
     input QuestionInput {
         number: String!
         description: String!
         status: String = new2
         options: [String!]
     }
-
+    
     type Mutation {
-        createQuestion(questionInput: QuestionInput) : Question!
+        createQuestion(questionInput: QuestionInput) : Response!
     }
 
     schema {
