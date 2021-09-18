@@ -1,0 +1,15 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <img src="logo.png" class="img-thumbnail" width="100px"  height="100px"/>
+  <a class="navbar-brand" href="/">Perguntas</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/about">Sobre</a>
+    </li>
+  </ul>
+  <% if (typeof name !='undefined' ) { %>
+    <em>Usuário: <%= name %></em>
+  <% } %>
+</nav>

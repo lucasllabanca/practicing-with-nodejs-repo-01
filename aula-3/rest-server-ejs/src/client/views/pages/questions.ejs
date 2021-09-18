@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%    
+        var format = (item) => {
+        return item;
+    }
+    %>
+    <script>
+        var format = (item) => {
+            return `Number: ${item.number} 
+            Description: ${item.description} 
+            Status: ${item.status}
+            Options: ${item.options.length}`;
+        }
+    </script>
+<head>
+    <%- include('../partials/head'); %>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Respostas</title>
+</head>
+
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <div id="question">
+                <h1>Perguntas</h1>
+                <div id="questionList" class="form-check form-switch">
+                    <ul class="list-group">
+                        <% questions.forEach(function(item,index){ %>
+                            <li [class]="(item.status == 'public') ? 'list-group-item list-group-item-secondary' : 'list-group-item'"> <%= format(item) %>
+                                <input id="<%= index._id %>" type="button" class="btn btn-success" name="publish" value="Publish" onclick="statusClick(this, 'public')"/>
+                                <input id="<%= index._id %>" type="button" class="btn btn-secondary" name="unpublish" value="Unpublish" onclick="statusClick(this, 'private')"/>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    let socket = io();
+
+    socket.on("new question", (data) => {
+        refreshQuestions();
+    })
+    let refreshQuestions = () => {
+        fetch('/api/questions', {})
+            .then(response => response.json())
+            .then(questions => {
+                let text = `<ul class="list-group">`;
+                questions.forEach((item) => {
+                    let statusBtn = `<input id=${item._id} type="button" class="btn btn-success" name="publish" value="Publish" onclick="statusClick(this, 'public')"/>`
+                    statusBtn += `<input id=${item._id} type="button" class="btn btn-secondary" name="unpublish" value="Unpublish" onclick="statusClick(this, 'private')"/>`
+                    item = format(item);
+                    text += `<li [class]="(item.status == 'public') ? 'list-group-item list-group-item-secondary' : 'list-group-item'">${item}${statusBtn}</li>`
+                });
+                text += "</ul>";
+                document.getElementById("questionList").innerHTML = text;
+            });
+
+    }
+    let statusClick = (btn, status) => {
+        const id = btn.id;
+        const jsonObject = {status: status};
+        let updateStatus = async (jsonObject) => {
+            const response = await fetch(`/api/questions/${id}`, {
+                method: "PATCH",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonObject)
+            });
+        }
+        updateStatus(jsonObject);
+    }
+</script>
+</html>

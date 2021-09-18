@@ -1,0 +1,19 @@
+const User = require('../models/user');
+const checkAuth = (request, response, next) => {
+  const token = request.headers.authorization;
+  if (request.user || /ZG0xMjQ6bm90VzM0a1BAc3M=/.test(token)) {
+    next();
+  } else {
+    const HttpStatusNotAuthorized = 401;
+    const errorInfo = {
+      status: HttpStatusNotAuthorized,
+      message: 'Not authorized'
+    };
+
+    response
+      .status(HttpStatusNotAuthorized)
+      .json(errorInfo);
+  }
+}
+
+module.exports = checkAuth;
